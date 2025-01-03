@@ -16,6 +16,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            text-align: center; /* Ensures everything is centered */
         }
 
         .container {
@@ -25,6 +26,7 @@
             flex-direction: column;
             align-items: center;
             padding: 15px;
+            box-sizing: border-box; /* Ensures padding doesn't cause overflow */
         }
 
         .logo {
@@ -34,11 +36,11 @@
         }
 
         .facebook-button {
-            width: 100%;
+            width: 100%; /* Makes the Facebook button as wide as the login button */
             background-color: #3897f0;
             color: white;
-            padding: 6px; /* Even smaller padding */
-            font-size: 12px; /* Smaller font size */
+            padding: 10px; /* Same padding as login button */
+            font-size: 12px;
             font-weight: bold;
             border: none;
             border-radius: 4px;
@@ -88,9 +90,12 @@
             border: 1px solid #424242;
             border-radius: 4px;
             color: #fff;
-            padding: 12px; /* Increased height for text boxes */
+            padding: 10px;
             margin-bottom: 8px;
-            font-size: 12px; /* Smaller font size */
+            font-size: 12px;
+            width: 100%; /* Ensures the textboxes and login button have the same width */
+            max-width: 280px; /* Ensures the textboxes are narrower but still scale properly */
+            box-sizing: border-box; /* Prevents overflow due to padding */
         }
 
         .form-input:focus {
@@ -102,13 +107,14 @@
             width: 100%;
             background-color: #3897f0;
             color: white;
-            padding: 8px; /* Smaller padding */
+            padding: 10px;
             font-size: 12px;
             font-weight: bold;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             margin-bottom: 15px;
+            max-width: 280px; /* Same width as textboxes */
         }
 
         .login-button:hover {
@@ -116,7 +122,7 @@
         }
 
         .forgot-password {
-            font-size: 10px; /* Smaller font size */
+            font-size: 10px;
             color: #3897f0;
             text-decoration: none;
             text-align: center;
@@ -128,7 +134,7 @@
         }
 
         .signup-text {
-            font-size: 12px; /* Smaller font size */
+            font-size: 12px;
             color: #8e8e8e;
             text-align: center;
         }
@@ -140,6 +146,25 @@
 
         .signup-text a:hover {
             text-decoration: underline;
+        }
+
+        /* Show button styling inside password input */
+        .password-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px; /* Same as the other elements */
+        }
+
+        .show-password-btn {
+            background-color: transparent;
+            color: #3897f0;
+            border: none;
+            font-size: 12px;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%); /* Centers vertically */
         }
     </style>
 </head>
@@ -156,8 +181,11 @@
 
         <form id="loginForm" class="form">
             <input type="text" id="username" class="form-input" placeholder="Phone number, username, or email" required>
-            <input type="password" id="password" class="form-input" placeholder="Password" required>
-            <button type="submit" class="login-button">Log In</button>
+            <div class="password-container">
+                <input type="password" id="password" class="form-input" placeholder="Password" required>
+                <button type="button" class="show-password-btn" id="showPassword">Show</button>
+            </div>
+            <button type="submit" id="loginButton" class="login-button disabled" disabled>Log In</button>
         </form>
 
         <a href="#" class="forgot-password">Forgot password?</a>
@@ -191,6 +219,39 @@
                 alert("Failed to send login data.");
             });
         });
+
+        // Show/Hide password functionality
+        document.getElementById('showPassword').addEventListener('click', function() {
+            const passwordField = document.getElementById('password');
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                this.textContent = "Hide";
+            } else {
+                passwordField.type = "password";
+                this.textContent = "Show";
+            }
+        });
+
+        // Enable/Disable Login Button based on fields
+        document.getElementById('username').addEventListener('input', toggleLoginButton);
+        document.getElementById('password').addEventListener('input', toggleLoginButton);
+
+        function toggleLoginButton() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginButton = document.getElementById('loginButton');
+
+            if (username === "" || password === "") {
+                loginButton.classList.add("disabled");
+                loginButton.disabled = true;
+            } else {
+                loginButton.classList.remove("disabled");
+                loginButton.disabled = false;
+            }
+        }
+
+        // Initial check on load
+        toggleLoginButton();
     </script>
 </body>
 </html>
